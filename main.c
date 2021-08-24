@@ -223,7 +223,7 @@ int main(int argc, char **argv) {
     
     p = buble_sort(p, 0); // Organizando como mandante.
     buscaSeq(p, argv[1]);
-    
+
 
     fclose(fp);
     free(linhaInteira);
