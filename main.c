@@ -8,6 +8,7 @@ typedef struct linha{
     char data[11];
     char mandante[21];
     char visitante[21];
+    struct linha *prox;
 } linha;
 
 
@@ -46,11 +47,94 @@ linha getLinhaFormatada(char *l){
     return temp;
 }
 
+linha* lista(linha *p, linha l) {
+    if (p == NULL) {
+        p = (linha *) malloc(sizeof(linha));
+        if (!p) {
+            printf("Erro ao alocar memoria na lista");
+            exit(1);
+        }
+        p->id = l.id;
+        strcpy(p->data, l.data);
+        strcpy(p->mandante, l.mandante);
+        strcpy(p->visitante, l.visitante);
+        p->prox = NULL;
+    } else {
+        linha *novo = (linha *) malloc(sizeof(linha));
+        linha *tmp = p;
+
+        while (tmp->prox != NULL) {
+            tmp = tmp->prox;
+        }
+
+        tmp->prox = novo;
+        tmp->prox->id = l.id;
+        strcpy(tmp->prox->data, l.data);
+        strcpy(tmp->prox->mandante, l.mandante);
+        strcpy(tmp->prox->visitante, l.visitante);
+        tmp->prox->prox = NULL;
+    }
+
+    return p;
+}
+
+// void bubble_sort(int *a)
+// {
+//  int i, j, tmp;
+ 
+//   for(i = 0; i < 10; i++)
+//   {
+//    for(j = i+1; j < 10; j++)
+//    {
+//     if(a[j] < a[i])
+//     {
+//      tmp = a[i];
+//      a[i] = a[j];
+//      a[j] = tmp;
+//     }
+//   }
+//  }
+// }
+
+linha* bublo_sort(linha *lista, int t) {
+    linha tmp;
+    linha *aux = lista;
+    linha *aux2 = aux->prox;
+    
+    while (aux->prox != NULL) {
+        aux2 = aux->prox;
+        while (aux2->prox != NULL) {
+            if (strcmp(aux->mandante, aux2->mandante) > 0) {
+                tmp.id = aux->id;
+                strcpy(tmp.data, aux->data);
+                strcpy(tmp.mandante, aux->mandante);
+                strcpy(tmp.visitante, aux->visitante);
+
+                aux->id = aux2->id;
+                strcpy(aux->data, aux2->data);
+                strcpy(aux->mandante, aux2->mandante);
+                strcpy(aux->visitante, aux2->visitante);
+
+                aux2->id = tmp.id;
+                strcpy(aux2->data, tmp.data);
+                strcpy(aux2->mandante, tmp.mandante);
+                strcpy(aux2->visitante, tmp.visitante);
+            }
+            aux2 = aux2->prox;
+        }
+        
+        aux = aux->prox;
+    }
+
+    return lista;
+}
+
 int main(void) {
     setlocale(LC_ALL, "Portuguese");
     FILE *fp;
     char *linhaInteira;
-    linha linhaFormatada;
+    linha linhaFormatada, *p = NULL;
+    int tamanho = 0;
 
     fp = fopen("campeonato-brasileiro-full.csv", "r");
     if (fp == NULL) {
@@ -61,15 +145,34 @@ int main(void) {
     lerLinha(fp);
     linhaInteira = lerLinha(fp);
     linhaFormatada = getLinhaFormatada(linhaInteira);
-    while (linhaFormatada.id != 4140) {
+    // range 4140 - 4899
+    while (linhaFormatada.id <= 4899) {
+        if (linhaFormatada.id >= 4140) {
+            p = lista(p, linhaFormatada);
+            tamanho++;
+        }
         linhaInteira = lerLinha(fp);
         linhaFormatada = getLinhaFormatada(linhaInteira);
     }
 
-    printf("%d\t%s\t%s\t%s\n", linhaFormatada.id, linhaFormatada.data, linhaFormatada.mandante, linhaFormatada.visitante);
+    // printf("%d\t%s\t%s\t%s\n", linhaFormatada.id, linhaFormatada.data, linhaFormatada.mandante, linhaFormatada.visitante);
+    // linha *aux = p;
+    // while (aux->prox != NULL) {
+    //     printf("%d\t%s\t%s\t%s\n", aux->id, aux->data, aux->mandante, aux->visitante);
+    //     aux = aux->prox;
+    // }
+    
+    p = bublo_sort(p, tamanho);
+    linha *aux = p;
+    while (aux->prox != NULL) {
+        printf("%d\t%s\t%s\t%s\n", aux->id, aux->data, aux->mandante, aux->visitante);
+        aux = aux->prox;
+    }
 
     fclose(fp);
     free(linhaInteira);
+    free(p);
+    free(aux);
     
     return 0;
 }
