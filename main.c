@@ -78,23 +78,6 @@ linha* lista(linha *p, linha l) {
     return p;
 }
 
-// void bubble_sort(int *a)
-// {
-//  int i, j, tmp;
- 
-//   for(i = 0; i < 10; i++)
-//   {
-//    for(j = i+1; j < 10; j++)
-//    {
-//     if(a[j] < a[i])
-//     {
-//      tmp = a[i];
-//      a[i] = a[j];
-//      a[j] = tmp;
-//     }
-//   }
-//  }
-// }
 
 linha* bublo_sort(linha *lista, int t) {
     linha tmp;
