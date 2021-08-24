@@ -79,35 +79,68 @@ linha* lista(linha *p, linha l) {
 }
 
 
-linha* bublo_sort(linha *lista, int t) {
+linha* buble_sort(linha *lista, int t, int op) {
     linha tmp;
     linha *aux = lista;
     linha *aux2 = aux->prox;
-    
-    while (aux->prox != NULL) {
-        aux2 = aux->prox;
-        while (aux2->prox != NULL) {
-            if (strcmp(aux->mandante, aux2->mandante) > 0) {
-                tmp.id = aux->id;
-                strcpy(tmp.data, aux->data);
-                strcpy(tmp.mandante, aux->mandante);
-                strcpy(tmp.visitante, aux->visitante);
 
-                aux->id = aux2->id;
-                strcpy(aux->data, aux2->data);
-                strcpy(aux->mandante, aux2->mandante);
-                strcpy(aux->visitante, aux2->visitante);
+    switch (op) {
+        case 0: // Organizando como mandante
+            while (aux->prox != NULL) {
+                aux2 = aux->prox;
+                while (aux2->prox != NULL) {
+                    if (strcmp(aux->mandante, aux2->mandante) > 0) {
+                        tmp.id = aux->id;
+                        strcpy(tmp.data, aux->data);
+                        strcpy(tmp.mandante, aux->mandante);
+                        strcpy(tmp.visitante, aux->visitante);
 
-                aux2->id = tmp.id;
-                strcpy(aux2->data, tmp.data);
-                strcpy(aux2->mandante, tmp.mandante);
-                strcpy(aux2->visitante, tmp.visitante);
+                        aux->id = aux2->id;
+                        strcpy(aux->data, aux2->data);
+                        strcpy(aux->mandante, aux2->mandante);
+                        strcpy(aux->visitante, aux2->visitante);
+
+                        aux2->id = tmp.id;
+                        strcpy(aux2->data, tmp.data);
+                        strcpy(aux2->mandante, tmp.mandante);
+                        strcpy(aux2->visitante, tmp.visitante);
+                    }
+                    aux2 = aux2->prox;
+                }
+                aux = aux->prox;
             }
-            aux2 = aux2->prox;
-        }
+            break;
         
-        aux = aux->prox;
+        case 1: // Organizando como visitante
+            while (aux->prox != NULL) {
+                aux2 = aux->prox;
+                while (aux2->prox != NULL) {
+                    if (strcmp(aux->visitante, aux2->visitante) > 0) {
+                        tmp.id = aux->id;
+                        strcpy(tmp.data, aux->data);
+                        strcpy(tmp.mandante, aux->mandante);
+                        strcpy(tmp.visitante, aux->visitante);
+
+                        aux->id = aux2->id;
+                        strcpy(aux->data, aux2->data);
+                        strcpy(aux->mandante, aux2->mandante);
+                        strcpy(aux->visitante, aux2->visitante);
+
+                        aux2->id = tmp.id;
+                        strcpy(aux2->data, tmp.data);
+                        strcpy(aux2->mandante, tmp.mandante);
+                        strcpy(aux2->visitante, tmp.visitante);
+                    }
+                    aux2 = aux2->prox;
+                }
+                aux = aux->prox;
+            }
+            break;
+        default:
+            printf("Ta doido misera.\n");
     }
+    
+   
 
     return lista;
 }
@@ -138,17 +171,19 @@ int main(void) {
         linhaFormatada = getLinhaFormatada(linhaInteira);
     }
 
-    // printf("%d\t%s\t%s\t%s\n", linhaFormatada.id, linhaFormatada.data, linhaFormatada.mandante, linhaFormatada.visitante);
-    // linha *aux = p;
-    // while (aux->prox != NULL) {
-    //     printf("%d\t%s\t%s\t%s\n", aux->id, aux->data, aux->mandante, aux->visitante);
-    //     aux = aux->prox;
-    // }
     
-    p = bublo_sort(p, tamanho);
+    p = buble_sort(p, tamanho, 0); // Organizando como mandante.
     linha *aux = p;
     while (aux->prox != NULL) {
         printf("%d\t%s\t%s\t%s\n", aux->id, aux->data, aux->mandante, aux->visitante);
+        aux = aux->prox;
+    }
+
+    puts("\n");
+    p = buble_sort(p, tamanho, 1); // Organizando como visitante.
+    aux = p;
+    while (aux->prox != NULL) {
+        printf("%5d\t%s\t%20s\t%20s\n", aux->id, aux->data, aux->mandante, aux->visitante);
         aux = aux->prox;
     }
 
