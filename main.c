@@ -79,7 +79,7 @@ linha* lista(linha *p, linha l) {
 }
 
 
-linha* buble_sort(linha *lista, int t, int op) {
+linha* buble_sort(linha *lista, int op) {
     linha tmp;
     linha *aux = lista;
     linha *aux2 = aux->prox;
@@ -145,12 +145,37 @@ linha* buble_sort(linha *lista, int t, int op) {
     return lista;
 }
 
-int main(void) {
+
+linha* buscaSeq(linha *lista, char *chave) {
+    linha *aux = lista;
+    while (aux->prox != NULL) {
+        if (strcmp(aux->mandante, chave) == 0) {
+            printf("%5d\t%s\t%20s\t%20s\n", aux->id, aux->data, aux->mandante, aux->visitante);
+        }
+
+        if (strcmp(aux->visitante, chave) == 0) {
+            printf("%5d\t%s\t%20s\t%20s\n", aux->id, aux->data, aux->mandante, aux->visitante);
+        }
+        
+        aux = aux->prox;
+    }
+
+    return lista;
+}
+
+int main(int argc, char **argv) {
     setlocale(LC_ALL, "Portuguese");
     FILE *fp;
     char *linhaInteira;
     linha linhaFormatada, *p = NULL;
     int tamanho = 0;
+
+    if (argc != 2) {
+        printf("Precisa do nome do time, camarada.\n");
+        return 1;
+    }
+
+    argv[1][0] = toupper(argv[1][0]);
 
     fp = fopen("campeonato-brasileiro-full.csv", "r");
     if (fp == NULL) {
@@ -172,25 +197,13 @@ int main(void) {
     }
 
     
-    p = buble_sort(p, tamanho, 0); // Organizando como mandante.
-    linha *aux = p;
-    while (aux->prox != NULL) {
-        printf("%d\t%s\t%s\t%s\n", aux->id, aux->data, aux->mandante, aux->visitante);
-        aux = aux->prox;
-    }
-
-    puts("\n");
-    p = buble_sort(p, tamanho, 1); // Organizando como visitante.
-    aux = p;
-    while (aux->prox != NULL) {
-        printf("%5d\t%s\t%20s\t%20s\n", aux->id, aux->data, aux->mandante, aux->visitante);
-        aux = aux->prox;
-    }
+    p = buble_sort(p, 0); // Organizando como mandante.
+    buscaSeq(p, argv[1]);
+    
 
     fclose(fp);
     free(linhaInteira);
     free(p);
-    free(aux);
     
     return 0;
 }
