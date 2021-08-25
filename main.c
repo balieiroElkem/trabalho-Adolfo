@@ -73,10 +73,10 @@ linha getLinhaFormatada(char *l) {
 		} else if(i == 11) {
 			strcpy(temp.estado_mandante, aux);
 		} else if(i == 12) {
-		strcpy(temp.estado_visitante, aux);
-		/*} else if(i == 13) {
-			strcpy(temp.estado_vencedor, aux);*/
-		}
+		    strcpy(temp.estado_visitante, aux);
+		} /*else if(i == 13) {
+			strcpy(temp.estado_vencedor, aux);
+		}*/
         aux = strtok(NULL, ";");
     }
     
