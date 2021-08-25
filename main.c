@@ -6,9 +6,19 @@
 
 typedef struct linha{
     int id;
+    char rodada[21]; //Novo
     char data[11];
+    char horario[6]; //Novo
+    char dia[14]; //Novo
     char mandante[21];
     char visitante[21];
+    char vencedor[21]; //Novo
+    char arena[31]; //Novo
+    int mandante_placar; //Novo
+    int visitante_placar; //Novo
+    char estado_mandante[3]; //Novo
+    char estado_visitante[3]; //Novo
+    char estado_vencedor[3]; //Novo
     struct linha *prox;
 } linha;
 
@@ -34,28 +44,49 @@ char* lerLinha(FILE *p) {
 
 // Formata a linha pra obter os valores necessários para a struct linha
 linha getLinhaFormatada(char *l) {
-    linha temp; // varável temporária para formatar a String com a linha do arquivo.
+    linha temp; // variável temporária para formatar a String com a linha do arquivo.
 
     char *aux = strtok(l, ";"); // Quebra a string cada vez que encontrar um ';'
-    for(int i = 0; i < 7; i++) {
+    for(int i = 0; i < 14; i++) {
         if(i == 0) {
             temp.id = atoi(aux);
+        } else if(i == 1) {
+				strcpy(temp.rodada, aux);
         } else if(i == 2) {
             strcpy(temp.data, aux);
+        } else if(i == 3) {
+			strcpy(temp.horario, aux);
+		} else if(i == 4){
+			strcpy(temp.dia, aux);
         } else if(i == 5) {
             strcpy(temp.mandante, aux);
         } else if(i == 6) {
             strcpy(temp.visitante, aux);
-        }
+        } else if(i == 7) {
+			strcpy(temp.vencedor, aux);
+		} else if(i == 8) {
+			strcpy(temp.arena, aux);
+		} else if(i == 9) {
+			temp.mandante_placar = atoi(aux);
+		} else if(i == 10) {
+			temp.visitante_placar = atoi(aux);
+		} else if(i == 11) {
+			strcpy(temp.estado_mandante, aux);
+		} else if(i == 12) {
+		strcpy(temp.estado_visitante, aux);
+		/*} else if(i == 13) {
+			strcpy(temp.estado_vencedor, aux);*/
+		}
         aux = strtok(NULL, ";");
     }
+    
     return temp;
 }
 
 
 // Produz uma lista encadeade.
 linha* lista(linha *p, linha l) {
-    if (p == NULL) { // Verifica se p está fazio
+    if (p == NULL) { // Verifica se p está vazio
         p = (linha *) malloc(sizeof(linha)); // caso esteja vazio, aloca a primeira variável
         if (!p) {
             printf("Erro ao alocar memoria na lista");
@@ -64,12 +95,22 @@ linha* lista(linha *p, linha l) {
 
         // Atribui os valores da variável l para o novo no da lista.
         p->id = l.id;
+        strcpy(p->rodada, l.rodada);
         strcpy(p->data, l.data);
+        strcpy(p->horario, l.horario);
+        strcpy(p->dia, l.dia);
         strcpy(p->mandante, l.mandante);
         strcpy(p->visitante, l.visitante);
+        strcpy(p->vencedor, l.vencedor);
+        strcpy(p->arena, l.arena);
+        p->mandante_placar = l.mandante_placar;
+        p->visitante_placar = l.visitante_placar;
+        strcpy(p->estado_mandante, l.estado_mandante);
+        strcpy(p->estado_visitante, l.estado_visitante);
+        strcpy(p->estado_vencedor, l.estado_vencedor);
         p->prox = NULL;
 
-    } else { // Coso p não esteja vazio, deve-se procurar a última no da lista
+    } else { // Caso p não esteja vazio, deve-se procurar o último no da lista
         linha *novo = (linha *) malloc(sizeof(linha)); // aloca um novo no para por na lista
         linha *tmp = p;
 
@@ -79,9 +120,19 @@ linha* lista(linha *p, linha l) {
 
         tmp->prox = novo; // coloca o novo no na lista.
         tmp->prox->id = l.id;
+        strcpy(tmp->prox->rodada, l.rodada);
         strcpy(tmp->prox->data, l.data);
+        strcpy(tmp->prox->horario, l.horario);
+        strcpy(tmp->prox->dia, l.dia);
         strcpy(tmp->prox->mandante, l.mandante);
         strcpy(tmp->prox->visitante, l.visitante);
+        strcpy(tmp->prox->vencedor, l.vencedor);
+        strcpy(tmp->prox->arena, l.arena);
+        tmp->prox->mandante_placar = l.mandante_placar;
+        tmp->prox->visitante_placar = l.visitante_placar;
+        strcpy(tmp->prox->estado_mandante, l.estado_mandante);
+        strcpy(tmp->prox->estado_visitante, l.estado_visitante);
+        strcpy(tmp->prox->estado_vencedor, l.estado_vencedor);
         tmp->prox->prox = NULL; // atribui NULL para explicitar que este é agora o último no da lista
     }
 
@@ -104,20 +155,51 @@ linha* buble_sort(linha *lista, int op) {
 
                 while (aux2->prox != NULL) {
                     if (strcmp(aux->mandante, aux2->mandante) > 0) { // caso o valor de aux->mandante seja mais alto que aux2->mandante, é feita a troca.
-                        tmp.id = aux->id;
-                        strcpy(tmp.data, aux->data);
-                        strcpy(tmp.mandante, aux->mandante);
-                        strcpy(tmp.visitante, aux->visitante);
 
-                        aux->id = aux2->id;
-                        strcpy(aux->data, aux2->data);
-                        strcpy(aux->mandante, aux2->mandante);
-                        strcpy(aux->visitante, aux2->visitante);
+						tmp.id = aux->id;
+						strcpy(tmp.rodada, aux->rodada);
+						strcpy(tmp.data, aux->data);
+						strcpy(tmp.horario, aux->horario);
+						strcpy(tmp.dia, aux->dia);
+						strcpy(tmp.mandante, aux->mandante);
+						strcpy(tmp.visitante, aux->visitante);
+						strcpy(tmp.vencedor, aux->vencedor);
+						strcpy(tmp.arena, aux->arena);
+						tmp.mandante_placar = aux->mandante_placar;
+						tmp.visitante_placar = aux->visitante_placar;
+						strcpy(tmp.estado_mandante, aux->estado_mandante);
+						strcpy(tmp.estado_visitante, aux->estado_visitante);
+						strcpy(tmp.estado_vencedor, aux->estado_vencedor);
 
-                        aux2->id = tmp.id;
-                        strcpy(aux2->data, tmp.data);
-                        strcpy(aux2->mandante, tmp.mandante);
-                        strcpy(aux2->visitante, tmp.visitante);
+						aux->id = aux2->id;
+						strcpy(aux->rodada, aux2->rodada);
+						strcpy(aux->data, aux2->data);
+						strcpy(aux->horario, aux2->horario);
+						strcpy(aux->dia, aux2->dia);
+						strcpy(aux->mandante, aux2->mandante);
+						strcpy(aux->visitante, aux2->visitante);
+						strcpy(aux->vencedor, aux2->vencedor);
+						strcpy(aux->arena, aux2->arena);
+						aux->mandante_placar = aux2->mandante_placar;
+						aux->visitante_placar = aux2->visitante_placar;
+						strcpy(aux->estado_mandante, aux2->estado_mandante);
+						strcpy(aux->estado_visitante, aux2->estado_visitante);
+						strcpy(aux->estado_vencedor, aux2->estado_vencedor);
+
+						aux2->id = tmp.id;
+						strcpy(aux2->rodada, tmp.rodada);
+						strcpy(aux2->data, tmp.data);
+						strcpy(aux2->horario, tmp.horario);
+						strcpy(aux2->dia, tmp.dia);
+						strcpy(aux2->mandante, tmp.mandante);
+						strcpy(aux2->visitante, tmp.visitante);
+						strcpy(aux2->vencedor, tmp.vencedor);
+						strcpy(aux2->arena, tmp.arena);
+						aux2->mandante_placar = tmp.mandante_placar;
+						aux2->visitante_placar = tmp.visitante_placar;
+						strcpy(aux2->estado_mandante, tmp.estado_mandante);
+						strcpy(aux2->estado_visitante, tmp.estado_visitante);
+						strcpy(aux2->estado_vencedor, tmp.estado_vencedor);
                     }
                     aux2 = aux2->prox;
                 }
@@ -169,12 +251,12 @@ void buscaSeq(linha *lista, char *chave) {
 
     while (aux->prox != NULL) {
         if (strcmp(aux->mandante, chave) == 0) { // Se o valor de aux->mandante corresponde a chave, printa o resultado na tela
-            printf("%5d\t%s\t%20s\t%20s\n", aux->id, aux->data, aux->mandante, aux->visitante);
+            printf("%4d %4s %6s %13s\t%s %20s\t%20s\t%20s\t%25s\t%2d %2d %2s %2s %2s\n", aux->id, aux->rodada, aux->horario, aux->dia, aux->data, aux->mandante, aux->visitante, aux->vencedor, aux->arena, aux->mandante_placar, aux->visitante_placar, aux->estado_mandante, aux->estado_visitante, aux->estado_vencedor);
             found = true;
         }
 
         if (strcmp(aux->visitante, chave) == 0) { // Se o valor de aux->visitante corresponde a chave, printa o resultado na tela
-            printf("%5d\t%s\t%20s\t%20s\n", aux->id, aux->data, aux->mandante, aux->visitante);
+            printf("%4d %4s %6s %13s\t%s %20s\t%20s\t%20s\t%25s\t%2d %2d %2s %2s %2s\n", aux->id, aux->rodada, aux->horario, aux->dia, aux->data, aux->mandante, aux->visitante, aux->vencedor, aux->arena, aux->mandante_placar, aux->visitante_placar, aux->estado_mandante, aux->estado_visitante, aux->estado_vencedor);
             found = true;
         }
         
@@ -185,6 +267,7 @@ void buscaSeq(linha *lista, char *chave) {
         printf("Não foi possível encontrar nenhum time com essa nome.\n");
     }
 }
+
 
 int main(int argc, char **argv) {
     setlocale(LC_ALL, "Portuguese"); // Tenta fazer o programa aceitar a lingua portuguesa.
@@ -220,8 +303,8 @@ int main(int argc, char **argv) {
         linhaFormatada = getLinhaFormatada(linhaInteira); // formata a linha para comparar os valores.
     }
 
-    
     p = buble_sort(p, 0); // Organizando como mandante.
+    printf("ID:  Rod:  Hora:\t  Dia:\t     Data:\t     Mandante:\t\t  Visitante:\t\t   Vencedor:\t\t\t   Arena:       PM PV EM EV\n");
     buscaSeq(p, argv[1]);
 
 
