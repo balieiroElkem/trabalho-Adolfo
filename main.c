@@ -251,12 +251,12 @@ void buscaSeq(linha *lista, char *chave) {
 
     while (aux->prox != NULL) {
         if (strcmp(aux->mandante, chave) == 0) { // Se o valor de aux->mandante corresponde a chave, printa o resultado na tela
-            printf("%4d %4s %6s %13s\t%s %20s\t%20s\t%20s\t%25s\t%2d %2d %2s %2s %2s\n", aux->id, aux->rodada, aux->horario, aux->dia, aux->data, aux->mandante, aux->visitante, aux->vencedor, aux->arena, aux->mandante_placar, aux->visitante_placar, aux->estado_mandante, aux->estado_visitante, aux->estado_vencedor);
+            printf("%4d %4s %6s %13s\t%s %20s\t%20s\t%20s\t%25s\t%2d %2d %2s %2s\n", aux->id, aux->rodada, aux->horario, aux->dia, aux->data, aux->mandante, aux->visitante, aux->vencedor, aux->arena, aux->mandante_placar, aux->visitante_placar, aux->estado_mandante, aux->estado_visitante);
             found = true;
         }
 
         if (strcmp(aux->visitante, chave) == 0) { // Se o valor de aux->visitante corresponde a chave, printa o resultado na tela
-            printf("%4d %4s %6s %13s\t%s %20s\t%20s\t%20s\t%25s\t%2d %2d %2s %2s %2s\n", aux->id, aux->rodada, aux->horario, aux->dia, aux->data, aux->mandante, aux->visitante, aux->vencedor, aux->arena, aux->mandante_placar, aux->visitante_placar, aux->estado_mandante, aux->estado_visitante, aux->estado_vencedor);
+            printf("%4d %4s %6s %13s\t%s %20s\t%20s\t%20s\t%25s\t%2d %2d %2s %2s\n", aux->id, aux->rodada, aux->horario, aux->dia, aux->data, aux->mandante, aux->visitante, aux->vencedor, aux->arena, aux->mandante_placar, aux->visitante_placar, aux->estado_mandante, aux->estado_visitante);
             found = true;
         }
         
@@ -274,7 +274,7 @@ int main(int argc, char **argv) {
     FILE *fp;
     char *linhaInteira;
     linha linhaFormatada, *p = NULL;
-    int tamanho = 0;
+    // int tamanho = 0;
 
     if (argc != 2) {
         printf("Precisa do nome do time, camarada.\n");
@@ -289,7 +289,7 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    lerLinha(fp);
+    lerLinha(fp); // Ler o cabeçalho
     linhaInteira = lerLinha(fp);
     linhaFormatada = getLinhaFormatada(linhaInteira);
     
@@ -297,7 +297,7 @@ int main(int argc, char **argv) {
     while (linhaFormatada.id <= 4899) { // Faz um busca pelo range necessário.
         if (linhaFormatada.id >= 4140) {
             p = lista(p, linhaFormatada);
-            tamanho++;
+            // tamanho++;
         }
         linhaInteira = lerLinha(fp); // pega mais uma linha do arquivo
         linhaFormatada = getLinhaFormatada(linhaInteira); // formata a linha para comparar os valores.
