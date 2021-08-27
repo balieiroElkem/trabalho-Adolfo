@@ -141,124 +141,23 @@ linha* lista(linha *p, linha l) {
 }
 
 
-// Organiza a lista. 0 para organizar pelos times mandantes. 1 para organizar pelos times visitantes.
-// A lista é reorganizada seguindo o alfabeto.
-linha* buble_sort(linha *lista, int op) {
-    linha tmp;
-    linha *aux = lista;
-    linha *aux2 = aux->prox;
-
-    switch (op) {
-        case 0: // Organizando como mandante
-            while (aux->prox != NULL) { // Primeiro loop para controlar os nos da lista que devem ser alterados
-            
-                aux2 = aux->prox; // variável para comparar qual no deve ser alterado.
-
-                while (aux2->prox != NULL) {
-                    if (strcmp(aux->mandante, aux2->mandante) > 0) { // caso o valor de aux->mandante seja mais alto que aux2->mandante, é feita a troca.
-
-						tmp.id = aux->id;
-						strcpy(tmp.rodada, aux->rodada);
-						strcpy(tmp.data, aux->data);
-						strcpy(tmp.horario, aux->horario);
-						strcpy(tmp.dia, aux->dia);
-						strcpy(tmp.mandante, aux->mandante);
-						strcpy(tmp.visitante, aux->visitante);
-						strcpy(tmp.vencedor, aux->vencedor);
-						strcpy(tmp.arena, aux->arena);
-						tmp.mandante_placar = aux->mandante_placar;
-						tmp.visitante_placar = aux->visitante_placar;
-						strcpy(tmp.estado_mandante, aux->estado_mandante);
-						strcpy(tmp.estado_visitante, aux->estado_visitante);
-						strcpy(tmp.estado_vencedor, aux->estado_vencedor);
-
-						aux->id = aux2->id;
-						strcpy(aux->rodada, aux2->rodada);
-						strcpy(aux->data, aux2->data);
-						strcpy(aux->horario, aux2->horario);
-						strcpy(aux->dia, aux2->dia);
-						strcpy(aux->mandante, aux2->mandante);
-						strcpy(aux->visitante, aux2->visitante);
-						strcpy(aux->vencedor, aux2->vencedor);
-						strcpy(aux->arena, aux2->arena);
-						aux->mandante_placar = aux2->mandante_placar;
-						aux->visitante_placar = aux2->visitante_placar;
-						strcpy(aux->estado_mandante, aux2->estado_mandante);
-						strcpy(aux->estado_visitante, aux2->estado_visitante);
-						strcpy(aux->estado_vencedor, aux2->estado_vencedor);
-
-						aux2->id = tmp.id;
-						strcpy(aux2->rodada, tmp.rodada);
-						strcpy(aux2->data, tmp.data);
-						strcpy(aux2->horario, tmp.horario);
-						strcpy(aux2->dia, tmp.dia);
-						strcpy(aux2->mandante, tmp.mandante);
-						strcpy(aux2->visitante, tmp.visitante);
-						strcpy(aux2->vencedor, tmp.vencedor);
-						strcpy(aux2->arena, tmp.arena);
-						aux2->mandante_placar = tmp.mandante_placar;
-						aux2->visitante_placar = tmp.visitante_placar;
-						strcpy(aux2->estado_mandante, tmp.estado_mandante);
-						strcpy(aux2->estado_visitante, tmp.estado_visitante);
-						strcpy(aux2->estado_vencedor, tmp.estado_vencedor);
-                    }
-                    aux2 = aux2->prox;
-                }
-                aux = aux->prox;
-            }
-            break;
-        
-        case 1: // Organizando como visitante
-            while (aux->prox != NULL) { // Primeiro loop para controlar os nos da lista que devem ser alterados
-
-                aux2 = aux->prox; // variável para comparar qual no deve ser alterado.
-
-                while (aux2->prox != NULL) {
-                    if (strcmp(aux->visitante, aux2->visitante) > 0) { // caso o valor de aux->visitante seja mais alto que aux2->visitante, é feita a troca.
-                        tmp.id = aux->id;
-                        strcpy(tmp.data, aux->data);
-                        strcpy(tmp.mandante, aux->mandante);
-                        strcpy(tmp.visitante, aux->visitante);
-
-                        aux->id = aux2->id;
-                        strcpy(aux->data, aux2->data);
-                        strcpy(aux->mandante, aux2->mandante);
-                        strcpy(aux->visitante, aux2->visitante);
-
-                        aux2->id = tmp.id;
-                        strcpy(aux2->data, tmp.data);
-                        strcpy(aux2->mandante, tmp.mandante);
-                        strcpy(aux2->visitante, tmp.visitante);
-                    }
-                    aux2 = aux2->prox;
-                }
-                aux = aux->prox;
-            }
-            break;
-        default: // Caso aplica algum valor errado é devolvido a mensagem de alerta.
-            printf("Ta doido misera.\n");
-    }
-    
-   
-
-    return lista; // Retorna a lista reorganizada
-}
-
-
 // Faz uma busca sequencial de uma palavra chave na lista.
-void buscaSeq(linha *lista, char *chave) {
+int buscaSeq(linha *lista, char *chave) {
     linha *aux = lista;
     bool found = false;
+    int quantJogos = 0;
 
     while (aux->prox != NULL) {
         if (strcmp(aux->mandante, chave) == 0) { // Se o valor de aux->mandante corresponde a chave, printa o resultado na tela
             printf("%4d %4s %6s %13s\t%s %20s\t%20s\t%20s\t%25s\t%2d %2d %2s %2s\n", aux->id, aux->rodada, aux->horario, aux->dia, aux->data, aux->mandante, aux->visitante, aux->vencedor, aux->arena, aux->mandante_placar, aux->visitante_placar, aux->estado_mandante, aux->estado_visitante);
             found = true;
+            quantJogos++;
         }
 
         if (strcmp(aux->visitante, chave) == 0) { // Se o valor de aux->visitante corresponde a chave, printa o resultado na tela
             printf("%4d %4s %6s %13s\t%s %20s\t%20s\t%20s\t%25s\t%2d %2d %2s %2s\n", aux->id, aux->rodada, aux->horario, aux->dia, aux->data, aux->mandante, aux->visitante, aux->vencedor, aux->arena, aux->mandante_placar, aux->visitante_placar, aux->estado_mandante, aux->estado_visitante);
             found = true;
+            quantJogos++;
         }
         
         aux = aux->prox;
@@ -267,6 +166,8 @@ void buscaSeq(linha *lista, char *chave) {
     if (!found) { // Verifica se foi encontrado algum valor correspontente a chave.
         printf("Não foi possível encontrar nenhum time com essa nome.\n");
     }
+
+    return quantJogos;
 }
 
 
@@ -275,7 +176,7 @@ int main(int argc, char **argv) {
     FILE *fp;
     char *linhaInteira;
     linha linhaFormatada, *p = NULL;
-    // int tamanho = 0;
+    int quantJogos = 0;
 
     if (argc != 2) {
         printf("Precisa do nome do time, camarada.\n");
@@ -298,15 +199,15 @@ int main(int argc, char **argv) {
     while (linhaFormatada.id <= 4899) { // Faz um busca pelo range necessário.
         if (linhaFormatada.id >= 4140) {
             p = lista(p, linhaFormatada);
-            // tamanho++;
         }
         linhaInteira = lerLinha(fp); // pega mais uma linha do arquivo
         linhaFormatada = getLinhaFormatada(linhaInteira); // formata a linha para comparar os valores.
     }
 
-    p = buble_sort(p, 0); // Organizando como mandante.
+    // p = buble_sort(p, 0); // Organizando como mandante.
     printf("ID:  Rod:  Hora:\t  Dia:\t     Data:\t     Mandante:\t\t  Visitante:\t\t   Vencedor:\t\t\t   Arena:       PM PV EM EV\n");
-    buscaSeq(p, argv[1]);
+    quantJogos = buscaSeq(p, argv[1]);
+    printf("\nQuantidade de jogos = %d\n", quantJogos);
 
 
     fclose(fp);
