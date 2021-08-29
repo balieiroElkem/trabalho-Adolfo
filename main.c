@@ -172,14 +172,14 @@ int buscaSeq(linha *lista, char *chave) {
 
 
 int main(int argc, char **argv) {
-    setlocale(LC_ALL, "Portuguese"); // Tenta fazer o programa aceitar a lingua portuguesa.
+    setlocale(LC_ALL, ""); // Tenta fazer o programa aceitar a lingua portuguesa.
     FILE *fp;
     char *linhaInteira;
     linha linhaFormatada, *p = NULL;
     int quantJogos = 0;
 
     if (argc != 2) {
-        printf("Precisa do nome do time, camarada.\n");
+        printf("Precisa do nome do time, camarada.\nNão pode executar assim.\n");
         return 1;
     }
 
